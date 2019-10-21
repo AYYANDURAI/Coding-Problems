@@ -8,25 +8,42 @@ public class Main
 	    String s=sc.next();
 	    String sp=sc.next();
 	    char sa[]=s.toCharArray();
-	    char spa[]=sp.toCharArray();
+	    char pattern[]=sp.toCharArray();
 	    
 	    int wi=0;
 	    boolean flag=true;
-	    for(int i=0;i<sa.length;i++){
-	        if(sa[i]=='*'){
+	    for(int i=0;i<pattern.length;i++){
+	        if(pattern[i]=='*'){
 	            if(flag){
-	                sa[wi++]=sa[i];
-	                System.out.print(sa[i]);
+	                pattern[wi++]=pattern[i];
 	                flag=false;
 	            }
 	        }else{
-	            sa[wi++]=sa[i];
-	            System.out.print(sa[i]);
+	            pattern[wi++]=pattern[i];
 	            flag=true;
 	        }
 	    }
+	    for(int i=0;i<wi;i++)
+	        System.out.print(pattern[i]);
+	    System.out.println();
 	        
 	    boolean T[][]=new boolean[sa.length+1][wi+1];
-	    T[0][0]=true;
+	    
+	    
+	    if(wi>0 && pattern[0]=='*'){
+	        T[0][1]=true;
+	    }
+	     
+	    T[0][0]=true;   
+	    for(int i=1;i<T.length;i++){
+	        for(int j=1;j<T[0].length;j++){
+	        if(pattern[j-1]=='?' || sa[i-1]==pattern[j-1]){
+	            T[i][j]=T[i-1][j-1];
+	        }else if(pattern[j-1]=='*'){
+	            T[i][j]=T[i-1][j] || T[i][j-1];
+	        }
+	        }
+	    }
+	    System.out.println(T[sa.length][wi]+" "+T[0].length);
 	}
 }
